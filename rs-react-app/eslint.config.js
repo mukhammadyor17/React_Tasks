@@ -28,6 +28,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      '@typescript-eslint/no-non-null-assertion': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
