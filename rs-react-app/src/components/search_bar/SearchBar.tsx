@@ -22,7 +22,16 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   handleClick = () => {
     this.props.onSearch(this.state.searchQuery.trim());
+    localStorage.setItem('searchQuery', this.state.searchQuery.trim());
   };
+
+  componentDidMount(): void {
+    if (localStorage.getItem('searchQuery')) {
+      this.setState({
+        searchQuery: localStorage.getItem('searchQuery') as string,
+      });
+    }
+  }
 
   render(): React.ReactNode {
     const { searchQuery } = this.state;
