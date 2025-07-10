@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const ApiService = axios.create({
-  baseURL: 'https://api.example.com',
+  baseURL: 'https://dummyjson.com',
 });
 
 export default ApiService;
