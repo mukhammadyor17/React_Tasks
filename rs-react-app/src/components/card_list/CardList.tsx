@@ -2,10 +2,12 @@ import React from 'react';
 import Loader from '../loader/Loader';
 import CardItem from '../card_item/CardItem';
 import ErrorCard from '../error_card/ErrorCard';
+import { type Post } from '../../models/post.interface';
 
 interface CardListProps {
   isLoading: boolean;
   isError: boolean;
+  posts: Post[];
 }
 
 class CardList extends React.Component<CardListProps> {
@@ -17,9 +19,9 @@ class CardList extends React.Component<CardListProps> {
 
         {!this.props.isError && !this.props.isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            <CardItem />
-            <CardItem />
-            <CardItem />
+            {this.props.posts.map((post: Post) => (
+              <CardItem key={post.id} post={post} />
+            ))}
           </div>
         )}
       </div>
