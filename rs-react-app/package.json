@@ -1,5 +1,6 @@
 {
   "name": "rs-react-app",
+  "homepage": "https://rolling-scopes-school.github.io/mukhammadyor17-REACT2025Q3",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,9 +10,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format:fix": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "gh-pages": "^6.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
