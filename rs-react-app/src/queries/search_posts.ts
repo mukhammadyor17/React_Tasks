@@ -6,7 +6,6 @@ export const searchPosts = async (payload: SearchParams) => {
     const { data } = await PostService.search(payload);
     return data;
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.error(error);
   }
 };

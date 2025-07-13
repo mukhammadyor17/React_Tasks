@@ -6,7 +6,6 @@ export const getPosts = async (payload: Params) => {
     const { data } = await PostService.get(payload);
     return data;
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.error(error);
   }
 };
