@@ -9,6 +9,14 @@ export default defineConfig({
         functions: 50,
         lines: 50,
       },
+      include: ['src/**/*.{js,jsx,ts,tsx}'],
+      exclude: [
+        'src/**/*.test.{js,jsx,ts,tsx}',
+        'src/**/*.spec.{js,jsx,ts,tsx}',
+        'src/index.{js,jsx,ts,tsx}',
+        'src/setupTests.{js,ts}',
+        'src/**/*.d.ts',
+      ],
     },
   },
 });
