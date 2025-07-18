@@ -1,6 +1,6 @@
-import React from 'react';
+import { Component } from 'react';
 
-class Loader extends React.Component {
+class Loader extends Component {
   render(): React.ReactNode {
     return (
       <div
