@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import CardItem from './CardItem';
 import type { Post } from '../../models/post.interface';
@@ -10,8 +9,9 @@ const post: Post = {
 };
 
 describe('Card Item component', () => {
-  it('It renders CardItem component', () => {
+  it('It renders CardItem component with title and body', () => {
     render(<CardItem post={post} />);
     expect(screen.getByText('Test title')).toBeDefined();
+    expect(screen.getByText('Lorem ipsum dolor...')).toBeInTheDocument();
   });
 });

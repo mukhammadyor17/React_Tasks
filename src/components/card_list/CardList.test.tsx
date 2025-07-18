@@ -1,9 +1,8 @@
-import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import CardList from './CardList';
 import type { Post } from '../../models/post.interface';
+import CardList from './CardList';
 
-const post: Post[] = [
+const posts: Post[] = [
   {
     id: 123,
     title: 'Test title',
@@ -13,7 +12,18 @@ const post: Post[] = [
 
 describe('CardList component', () => {
   it('It renders CardList component', () => {
-    render(<CardList posts={post} isLoading={false} />);
+    render(<CardList posts={posts} isLoading={false} />);
     expect(screen.getByText('Test title')).toBeDefined();
+  });
+
+  it('It renders empty CardList component', () => {
+    render(<CardList posts={[]} isLoading={false} />);
+    expect(screen.getByText('Not Found!')).toBeDefined();
+  });
+
+  it('It renders Loader in CardList component', () => {
+    render(<CardList posts={[]} isLoading={true} />);
+    const loader = screen.getByTestId('loader');
+    expect(loader).toBeDefined();
   });
 });
