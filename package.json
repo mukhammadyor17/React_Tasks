@@ -13,7 +13,8 @@
     "prepare": "husky",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "test": "vitest"
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@types/jsdom": "^21.1.7",
@@ -32,6 +33,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
+    "@vitest/ui": "^3.2.4",
     "axios": "^1.10.0",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
