@@ -1,10 +1,10 @@
-import { Component } from 'react';
 import { getPosts } from '../queries/get_posts';
 import { searchPosts } from '../queries/search_posts';
 import { type Post } from '../models/post.interface';
 
 import CardList from '../components/card_list/CardList';
 import SearchBar from '../components/search_bar/SearchBar';
+import React from 'react';
 
 interface HomePageState {
   data: Post[];
@@ -14,7 +14,7 @@ interface HomePageState {
   showError: boolean;
 }
 
-class HomePage extends Component<unknown, HomePageState> {
+class HomePage extends React.Component<unknown, HomePageState> {
   state: HomePageState = {
     data: [],
     query: '',
@@ -85,7 +85,6 @@ class HomePage extends Component<unknown, HomePageState> {
 
         <CardList posts={data} isLoading={isLoading} />
 
-        {/* Test button to trigger ErrorBoundary */}
         <div className="w-full flex justify-end mb-10 px-10">
           <button
             className="border border-red-400 px-4 py-2 rounded hover:bg-red-50"
