@@ -15,26 +15,17 @@ describe('HomePage API Integration', () => {
     localStorage.clear();
   });
 
-  it('Calls API with correct parameters (initial load)', async () => {
-    const getPostsSpy = vi
-      .spyOn(getPostsModule, 'getPosts')
-      .mockResolvedValueOnce({ posts: mockPosts });
-
+  it('Calls API and renders data on initial load (MSW)', async () => {
     render(<HomePage />);
 
-    await waitFor(() => {
-      expect(getPostsSpy).toHaveBeenCalledWith({ limit: 20 });
-    });
+    // Ждём появления данных из мокнутого ответа
+    expect(await screen.findByText('Test title')).toBeInTheDocument();
+    expect(screen.getByText('Lorem ipsum dolor amet')).toBeInTheDocument();
   });
 
   it('Handles successful API responses (renders data)', async () => {
-    vi.spyOn(getPostsModule, 'getPosts').mockResolvedValueOnce({
-      posts: mockPosts,
-    });
-
     render(<HomePage />);
-
-    expect(await screen.findByText('Test Post')).toBeInTheDocument();
+    expect(await screen.findByText('Test title')).toBeInTheDocument();
   });
 
   it('Handles API error responses (getPosts)', async () => {

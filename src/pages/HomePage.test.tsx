@@ -58,7 +58,5 @@ describe('HomePage component', () => {
     );
 
     expect(localStorage.getItem('searchQuery')).toBe('new query');
-
-    screen.debug();
   });
 });

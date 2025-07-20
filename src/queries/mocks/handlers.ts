@@ -4,9 +4,13 @@ import { http, HttpResponse } from 'msw';
 export const handlers = [
   http.get('https://dummyjson.com/posts', () => {
     return HttpResponse.json({
-      id: 'abc-123',
-      title: 'Test title',
-      body: 'Lorem ipsum dolor amet',
+      posts: [
+        {
+          id: 1,
+          title: 'Test title',
+          body: 'Lorem ipsum dolor amet',
+        },
+      ],
     });
   }),
 ];
