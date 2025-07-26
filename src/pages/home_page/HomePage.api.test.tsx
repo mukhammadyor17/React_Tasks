@@ -1,10 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import HomePage from './HomePage';
-import ErrorBoundary from '../components/error_boundary/ErrorBoundary';
-import * as getPostsModule from '../queries/get_posts';
-import * as searchPostsModule from '../queries/search_posts';
-import { type Post } from '../models/post.interface';
+import ErrorBoundary from '../../components/error_boundary/ErrorBoundary';
+import * as getPostsModule from '../../queries/get_posts';
+import * as searchPostsModule from '../../queries/search_posts';
+import { type Post } from '../../models/post.interface';
 import '@testing-library/jest-dom/vitest';
 
 const mockPosts: Post[] = [{ id: 1, title: 'Test Post', body: 'Test body' }];

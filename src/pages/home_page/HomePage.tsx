@@ -1,9 +1,9 @@
-import { getPosts } from '../queries/get_posts';
-import { searchPosts } from '../queries/search_posts';
-import { type Post } from '../models/post.interface';
+import { getPosts } from '../../queries/get_posts';
+import { searchPosts } from '../../queries/search_posts';
+import { type Post } from '../../models/post.interface';
 
-import CardList from '../components/card_list/CardList';
-import SearchBar from '../components/search_bar/SearchBar';
+import CardList from '../../components/card_list/CardList';
+import SearchBar from '../../components/search_bar/SearchBar';
 import React, { useState, useEffect } from 'react';
 
 const HomePage: React.FC = () => {
@@ -40,6 +40,11 @@ const HomePage: React.FC = () => {
   }
 
   useEffect(() => {
+    const saved = localStorage.getItem('searchQuery') ?? '';
+    setQuery(saved);
+  }, []);
+
+  useEffect(() => {
     const trimmed = query.trim();
 
     if (!trimmed) {
@@ -54,11 +59,6 @@ const HomePage: React.FC = () => {
 
     return () => clearTimeout(timer);
   }, [query]);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('searchQuery') ?? '';
-    setQuery(saved);
-  }, []);
 
   if (showError) throw new Error('Test error triggered by button');
   if (isError) throw new Error('Error when get data');

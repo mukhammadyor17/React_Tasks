@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import HomePage from './HomePage';
-import * as getPostsModule from '../queries/get_posts';
-import * as searchPostsModule from '../queries/search_posts';
+import * as getPostsModule from '../../queries/get_posts';
+import * as searchPostsModule from '../../queries/search_posts';
 import '@testing-library/jest-dom/vitest';
 
 const mockPosts = [{ id: 1, title: 'Test', body: 'Body content' }];

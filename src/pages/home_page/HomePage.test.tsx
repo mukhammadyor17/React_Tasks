@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HomePage from './HomePage';
-import * as getPostsModule from '../queries/get_posts';
-import * as searchPostsModule from '../queries/search_posts';
+import * as getPostsModule from '../../queries/get_posts';
+import * as searchPostsModule from '../../queries/search_posts';
 
 const mockPosts = [{ id: 1, title: 'Test Post', body: 'Hello' }];
 
