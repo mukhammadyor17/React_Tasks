@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router';
 import { type Post } from '../../models/post.interface';
 
 interface CardItemProps {
@@ -6,13 +7,16 @@ interface CardItemProps {
 }
 
 const CardItem: React.FC<CardItemProps> = ({ post }) => {
-  const { title, body } = post;
+  const { title, body, id } = post;
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-xs hover:shadow transition-shadow cursor-pointer">
+    <NavLink
+      to={`/post/${id}`}
+      className="bg-white p-4 rounded-lg shadow-xs hover:shadow transition-shadow cursor-pointer"
+    >
       <div className=" font-bold mb-2">{title}</div>
       <div className="text-sm text-gray-600">{body}</div>
-    </div>
+    </NavLink>
   );
 };
 
