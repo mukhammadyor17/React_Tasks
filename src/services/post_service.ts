@@ -2,6 +2,7 @@ import ApiService from '../network/axios';
 
 export interface Params {
   limit: number;
+  skip?: number;
 }
 
 export interface SearchParams {

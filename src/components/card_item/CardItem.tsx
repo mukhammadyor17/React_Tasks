@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import { type Post } from '../../models/post.interface';
 
 interface CardItemProps {
