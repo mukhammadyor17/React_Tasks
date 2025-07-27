@@ -4,6 +4,7 @@ import App from '../App';
 import HomeLayout from '../layouts/HomeLayout';
 import AboutPage from '../pages/about_page/AboutPage';
 import DetailPage from '../pages/detail_page/DetailPage';
+import NotFoundPage from '../pages/not_found_page/NotFoundPage';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         path: '/about',
         element: <AboutPage />,
+      },
+      {
+        path: '*',
+        element: <NotFoundPage />,
       },
     ],
   },

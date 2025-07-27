@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import type { Post } from '../../models/post.interface';
 import CardList from './CardList';
+import { MemoryRouter } from 'react-router-dom';
 
 const posts: Post[] = [
   {
@@ -12,7 +13,11 @@ const posts: Post[] = [
 
 describe('CardList component', () => {
   it('It renders CardList component', () => {
-    render(<CardList posts={posts} isLoading={false} />);
+    render(
+      <MemoryRouter>
+        <CardList posts={posts} isLoading={false} />
+      </MemoryRouter>
+    );
     expect(screen.getByText('Test title')).toBeDefined();
   });
 

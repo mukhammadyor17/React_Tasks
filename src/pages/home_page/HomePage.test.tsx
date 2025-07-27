@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HomePage from './HomePage';
+import { MemoryRouter } from 'react-router-dom';
 import * as getPostsModule from '../../queries/get_posts';
 import * as searchPostsModule from '../../queries/search_posts';
 
@@ -12,7 +13,11 @@ beforeEach(() => {
 
 describe('HomePage component', () => {
   it('It renders HomePage component', () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
   });
 
   it('Retrieves saved search term on component mount', async () => {
@@ -22,12 +27,16 @@ describe('HomePage component', () => {
       .spyOn(searchPostsModule, 'searchPosts')
       .mockResolvedValue({ posts: mockPosts });
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     expect(await screen.findByDisplayValue('test')).toBeInTheDocument();
 
     await waitFor(() =>
-      expect(searchSpy).toHaveBeenCalledWith({ limit: 20, q: 'test' })
+      expect(searchSpy).toHaveBeenCalledWith({ limit: 5, q: 'test' })
     );
   });
 
@@ -42,7 +51,11 @@ describe('HomePage component', () => {
       .spyOn(searchPostsModule, 'searchPosts')
       .mockResolvedValue({ posts: mockPosts });
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     expect(await screen.findByDisplayValue('old query')).toBeInTheDocument();
 
@@ -54,7 +67,7 @@ describe('HomePage component', () => {
     fireEvent.click(button);
 
     await waitFor(() =>
-      expect(searchSpy).toHaveBeenCalledWith({ limit: 20, q: 'new query' })
+      expect(searchSpy).toHaveBeenCalledWith({ limit: 5, q: 'new query' })
     );
 
     expect(localStorage.getItem('searchQuery')).toBe('new query');

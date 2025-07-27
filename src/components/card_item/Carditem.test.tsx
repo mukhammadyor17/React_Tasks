@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import CardItem from './CardItem';
+import { MemoryRouter } from 'react-router-dom';
 import type { Post } from '../../models/post.interface';
 
 const post: Post = {
@@ -10,7 +11,11 @@ const post: Post = {
 
 describe('Card Item component', () => {
   it('It renders CardItem component with title and body', () => {
-    render(<CardItem post={post} />);
+    render(
+      <MemoryRouter>
+        <CardItem post={post} />
+      </MemoryRouter>
+    );
     expect(screen.getByText('Test title')).toBeDefined();
     expect(screen.getByText('Lorem ipsum dolor...')).toBeInTheDocument();
   });

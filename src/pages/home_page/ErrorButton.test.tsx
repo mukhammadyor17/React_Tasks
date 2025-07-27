@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, vi } from 'vitest';
 import ErrorBoundary from '../../components/error_boundary/ErrorBoundary';
+import { MemoryRouter } from 'react-router-dom';
 import HomePage from './HomePage';
 import '@testing-library/jest-dom/vitest';
 
@@ -12,7 +13,9 @@ describe('Error Button Tests', () => {
 
     render(
       <ErrorBoundary>
-        <HomePage />
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
       </ErrorBoundary>
     );
 

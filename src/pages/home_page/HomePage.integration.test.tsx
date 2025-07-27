@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import HomePage from './HomePage';
 import * as getPostsModule from '../../queries/get_posts';
 import * as searchPostsModule from '../../queries/search_posts';
@@ -18,7 +19,11 @@ describe('HomePage Integration Tests', () => {
       .spyOn(getPostsModule, 'getPosts')
       .mockResolvedValue({ posts: mockPosts });
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(getPostsMock).toHaveBeenCalledTimes(1);
@@ -34,13 +39,17 @@ describe('HomePage Integration Tests', () => {
       .spyOn(searchPostsModule, 'searchPosts')
       .mockResolvedValue({ posts: mockPosts });
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     expect(await screen.findByDisplayValue('example')).toBeInTheDocument();
 
     await waitFor(() => {
       expect(searchPostsMock).toHaveBeenCalledWith({
-        limit: 20,
+        limit: 5,
         q: 'example',
       });
     });
@@ -57,7 +66,11 @@ describe('HomePage Integration Tests', () => {
 
     vi.spyOn(getPostsModule, 'getPosts').mockReturnValue(loadingPromise);
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     // Проверка: Loader виден во время загрузки
     expect(screen.getByTestId('loader')).toBeInTheDocument();

@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import HomePage from './HomePage';
 import ErrorBoundary from '../../components/error_boundary/ErrorBoundary';
 import * as getPostsModule from '../../queries/get_posts';
@@ -16,7 +17,11 @@ describe('HomePage API Integration', () => {
   });
 
   it('Calls API and renders data on initial load (MSW)', async () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     // Ждём появления данных из мокнутого ответа
     expect(await screen.findByText('Test title')).toBeInTheDocument();
@@ -24,7 +29,11 @@ describe('HomePage API Integration', () => {
   });
 
   it('Handles successful API responses (renders data)', async () => {
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     expect(await screen.findByText('Test title')).toBeInTheDocument();
   });
 
@@ -39,7 +48,9 @@ describe('HomePage API Integration', () => {
 
     render(
       <ErrorBoundary>
-        <HomePage />
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
       </ErrorBoundary>
     );
 
@@ -59,29 +70,35 @@ describe('HomePage API Integration', () => {
       .spyOn(searchPostsModule, 'searchPosts')
       .mockResolvedValueOnce({ posts: mockPosts });
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(searchPostsSpy).toHaveBeenCalledWith({ limit: 20, q: 'react' });
+      expect(searchPostsSpy).toHaveBeenCalledWith({ limit: 5, q: 'react' });
     });
   });
 
-  // it('Handles searchPosts error response', async () => {
-  //   localStorage.setItem('searchQuery', 'fail');
+  it('Handles searchPosts error response', async () => {
+    localStorage.setItem('searchQuery', 'fail');
 
-  //   vi.spyOn(searchPostsModule, 'searchPosts').mockRejectedValueOnce(
-  //     new Error('API search failed')
-  //   );
+    vi.spyOn(searchPostsModule, 'searchPosts').mockRejectedValueOnce(
+      new Error('API search failed')
+    );
 
-  //   const consoleError = vi
-  //     .spyOn(console, 'error')
-  //     .mockImplementation(() => {});
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
 
-  //   render(
-  //     <ErrorBoundary>
-  //       <HomePage />
-  //     </ErrorBoundary>
-  //   );
+    render(
+      <ErrorBoundary>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </ErrorBoundary>
+    );
 
     await waitFor(() => {
       expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
