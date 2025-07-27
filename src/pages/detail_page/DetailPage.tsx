@@ -34,8 +34,8 @@ const DetailPage = () => {
     <div className="p-6">
       <div className="flex justify-end">
         <NavLink
-          to={'/'}
-          className="px-6 py-2 bg-indigo-500 text-white rounded active:bg-indigo-600 hover:bg-indigo-700 transition-colors ml-auto"
+          to={'/React_Tasks'}
+          className="px-6 py-2 bg-indigo-500 !text-white rounded active:bg-indigo-600 hover:bg-indigo-700 transition-colors ml-auto"
         >
           Close
         </NavLink>

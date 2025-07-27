@@ -8,10 +8,10 @@ function App() {
         <div className="text-xl font-bold">React.Course</div>
         <ul className="flex gap-5">
           <li>
-            <NavLink to={'/'}>Main</NavLink>
+            <NavLink to={'/React_Tasks/'}>Main</NavLink>
           </li>
           <li>
-            <NavLink to={'/about'}>About</NavLink>
+            <NavLink to={'/React_Tasks/about'}>About</NavLink>
           </li>
         </ul>
       </div>

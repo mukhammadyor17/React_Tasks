@@ -11,7 +11,7 @@ const CardItem: React.FC<CardItemProps> = ({ post }) => {
 
   return (
     <NavLink
-      to={`/post/${id}`}
+      to={`post/${id}`}
       className="bg-white p-4 rounded-lg shadow-xs hover:shadow transition-shadow cursor-pointer"
     >
       <div className=" font-bold mb-2">{title}</div>

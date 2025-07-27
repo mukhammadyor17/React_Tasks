@@ -8,7 +8,7 @@ import NotFoundPage from '../pages/not_found_page/NotFoundPage';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/React_Tasks',
     element: <App />,
     children: [
       {
@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: '/about',
+        path: 'about',
         element: <AboutPage />,
       },
       {
