@@ -2,6 +2,7 @@ import { getPosts } from '../../queries/get_posts';
 import { searchPosts } from '../../queries/search_posts';
 import { type Post } from '../../models/post.interface';
 import { useSearchParams } from 'react-router-dom';
+import { useLocalStorage } from '../../hooks/use_local_storage';
 
 import CardList from '../../components/card_list/CardList';
 import SearchBar from '../../components/search_bar/SearchBar';
@@ -12,7 +13,7 @@ const limit = 5;
 
 const HomePage: React.FC = () => {
   const [data, setData] = useState<Post[]>([]);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useLocalStorage<string>('searchQuery', '');
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -26,7 +27,6 @@ const HomePage: React.FC = () => {
       setIsError(false);
 
       const skip = (page - 1) * limit;
-
       const res = await getPosts({ limit, skip });
       setData(res.posts);
     } catch {
@@ -40,7 +40,7 @@ const HomePage: React.FC = () => {
     try {
       setIsLoading(true);
       setIsError(false);
-      const res = await searchPosts({ limit: 5, q: searchQuery });
+      const res = await searchPosts({ limit, q: searchQuery });
       setData(res.posts);
     } catch {
       setIsError(true);
@@ -55,18 +55,12 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem('searchQuery') ?? '';
-    setQuery(saved);
-  }, []);
-
-  useEffect(() => {
     const trimmed = query.trim();
 
     if (trimmed) {
       const timer = setTimeout(() => {
-        localStorage.setItem('searchQuery', trimmed);
         fetchSearch(trimmed);
-      }, 300);
+      }, 500);
       return () => clearTimeout(timer);
     }
 
@@ -96,7 +90,9 @@ const HomePage: React.FC = () => {
       <div className="flex gap-4 my-3">
         {pages.map((i: number) => (
           <button
-            className={`w-10 h-10 flex justify-center items-center cursor-pointer border border-indigo-400 rounded-md ${page == i ? 'bg-indigo-400 text-white' : ''}`}
+            className={`w-10 h-10 flex justify-center items-center cursor-pointer border border-indigo-400 rounded-md ${
+              page == i ? 'bg-indigo-400 text-white' : ''
+            }`}
             key={i}
             onClick={() => changePageHandler(i)}
           >
