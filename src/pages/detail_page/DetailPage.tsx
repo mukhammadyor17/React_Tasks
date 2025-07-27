@@ -1,6 +1,31 @@
-import { NavLink } from 'react-router';
+import { useState, useEffect } from 'react';
+import { NavLink, useParams } from 'react-router';
+import type { Post } from '../../models/post.interface';
+import { getPostById } from '../../queries/get_by_id';
+import Loader from '../../components/loader/Loader';
 
 const DetailPage = () => {
+  const [data, setData] = useState<Post>();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { id } = useParams();
+
+  async function fetchPost() {
+    try {
+      setIsLoading(true);
+      const res = await getPostById(id as string);
+      setData(res);
+    } catch {
+      console.error('error when get detail');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchPost();
+  }, [id]);
+
   return (
     <div className="p-6">
       <div className="flex justify-end">
@@ -11,20 +36,27 @@ const DetailPage = () => {
           Close
         </NavLink>
       </div>
-      <div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita
-        dolorum rem illum natus. Nobis dolore et tempore aspernatur similique
-        dicta vel culpa magni? Harum accusamus beatae nostrum nemo eligendi
-        velit itaque ipsam nulla quod repudiandae voluptas, sed quibusdam
-        distinctio! Placeat voluptatibus sint unde laboriosam ipsa perferendis
-        repudiandae tempore sapiente, vitae repellendus optio culpa nulla.
-        Explicabo nostrum nobis ducimus aliquam asperiores numquam maxime, atque
-        corrupti reprehenderit nam quisquam sed dolor, doloremque ratione? Enim
-        consequatur voluptatibus temporibus error. Corporis deserunt ratione
-        quibusdam molestiae asperiores distinctio necessitatibus quisquam qui ad
-        adipisci, magni eius velit temporibus, eligendi assumenda reprehenderit,
-        iusto ea rem sed aliquam.
-      </div>
+      {isLoading && <Loader className="m-auto" />}
+      {data && !isLoading && (
+        <div className="mt-5 p-5 border border-indigo-100 rounded-sm">
+          <div className="text-2xl font-semibold mb-6">{data?.title}</div>
+          <div className="flex justify-end gap-5 font-semibold mb-5">
+            <div>👍🏻 {data?.reactions?.likes}</div>
+            <div>👎🏻 {data?.reactions?.dislikes}</div>
+          </div>
+          <div className="mb-5">{data?.body}</div>
+          <div className="flex gap-2">
+            {data?.tags?.map((tag: string) => (
+              <div
+                className="rounded-sm px-2 py-1 bg-indigo-100 text-indigo-500"
+                key={tag}
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

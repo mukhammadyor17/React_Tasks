@@ -17,6 +17,10 @@ class PostService {
   static search(params: SearchParams) {
     return ApiService.get('/posts/search', { params });
   }
+
+  static getById(id: string) {
+    return ApiService.get(`/posts/${id}`);
+  }
 }
 
 export default PostService;
