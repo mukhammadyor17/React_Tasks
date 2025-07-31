@@ -84,7 +84,7 @@ const HomePage: React.FC = () => {
   if (isError) throw new Error('Error when get data');
 
   return (
-    <div className="bg-indigo-50 h-screen flex justify-center items-center flex-col gap-2">
+    <div className="bg-indigo-50 dark:bg-gray-900 min-h-screen flex justify-center items-center flex-col gap-2 p-4">
       <SearchBar
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -96,7 +96,11 @@ const HomePage: React.FC = () => {
       <div className="flex gap-4 my-3">
         {pages.map((i: number) => (
           <button
-            className={`w-10 h-10 flex justify-center items-center cursor-pointer border border-indigo-400 rounded-md ${page == i ? 'bg-indigo-400 text-white' : ''}`}
+            className={`w-10 h-10 flex justify-center items-center cursor-pointer border border-indigo-400 dark:border-indigo-500 rounded-md transition-colors ${
+              page == i
+                ? 'bg-indigo-400 dark:bg-indigo-600 text-white'
+                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-gray-700'
+            }`}
             key={i}
             onClick={() => changePageHandler(i)}
           >
@@ -107,7 +111,7 @@ const HomePage: React.FC = () => {
 
       <div className="w-full flex justify-end mb-10 px-10">
         <button
-          className="border border-red-400 px-4 py-2 rounded hover:bg-red-50"
+          className="border border-red-400 dark:border-red-500 px-4 py-2 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
           onClick={() => setShowError(true)}
         >
           Test Error Boundary
