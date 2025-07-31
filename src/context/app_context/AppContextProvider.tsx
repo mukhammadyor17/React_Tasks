@@ -16,6 +16,5 @@ export const AppContextProvider = ({ children }: AppContextProviderProps) => {
 
 export const useAppContext = () => {
   const context = useContext(Context);
-  if (!context) throw new Error('Use app context within provider!');
   return context;
 };
