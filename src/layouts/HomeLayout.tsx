@@ -4,8 +4,6 @@ import HomePage from '../pages/home_page/HomePage';
 const HomeLayout = () => {
   const { id } = useParams();
 
-  console.log(id);
-
   return (
     <div className="flex">
       <div className="flex-1">
