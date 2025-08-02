@@ -17,7 +17,10 @@ const useFavorites = (post: Post) => {
     (state: RootState) => state.favorites.favorites
   );
 
-  const isFavorite = useMemo(() => favorites.includes(post), [favorites, post]);
+  const isFavorite = useMemo(
+    () => favorites.some((fav) => fav.id === post.id),
+    [favorites, post.id]
+  );
 
   const handleToggleFavorite = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
