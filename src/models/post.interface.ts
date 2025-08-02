@@ -1,5 +1,4 @@
 export interface Post {
-  map(String: StringConstructor): unknown;
   id: number;
   title: string;
   body: string;

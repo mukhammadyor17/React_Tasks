@@ -1,6 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HomePage from './HomePage';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store/index';
 import * as getPostsModule from '../../queries/get_posts';
 import * as searchPostsModule from '../../queries/search_posts';
 
@@ -14,9 +16,11 @@ beforeEach(() => {
 describe('HomePage component', () => {
   it('It renders HomePage component', () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
   });
 
@@ -28,9 +32,11 @@ describe('HomePage component', () => {
       .mockResolvedValue({ posts: mockPosts });
 
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(await screen.findByDisplayValue('test')).toBeInTheDocument();
@@ -52,9 +58,11 @@ describe('HomePage component', () => {
       .mockResolvedValue({ posts: mockPosts });
 
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(await screen.findByDisplayValue('old query')).toBeInTheDocument();

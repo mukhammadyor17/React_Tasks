@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store/index';
 import HomePage from './HomePage';
 import ErrorBoundary from '../../components/error_boundary/ErrorBoundary';
 import * as getPostsModule from '../../queries/get_posts';
@@ -18,9 +20,11 @@ describe('HomePage API Integration', () => {
 
   it('Calls API and renders data on initial load (MSW)', async () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
 
     // Ждём появления данных из мокнутого ответа
@@ -30,9 +34,11 @@ describe('HomePage API Integration', () => {
 
   it('Handles successful API responses (renders data)', async () => {
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
     expect(await screen.findByText('Test title')).toBeInTheDocument();
   });
@@ -47,11 +53,13 @@ describe('HomePage API Integration', () => {
       .mockImplementation(() => {});
 
     render(
-      <ErrorBoundary>
-        <MemoryRouter>
-          <HomePage />
-        </MemoryRouter>
-      </ErrorBoundary>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <MemoryRouter>
+            <HomePage />
+          </MemoryRouter>
+        </ErrorBoundary>
+      </Provider>
     );
 
     await waitFor(() =>
@@ -71,9 +79,11 @@ describe('HomePage API Integration', () => {
       .mockResolvedValueOnce({ posts: mockPosts });
 
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
 
     await waitFor(() => {
@@ -93,11 +103,13 @@ describe('HomePage API Integration', () => {
       .mockImplementation(() => {});
 
     render(
-      <ErrorBoundary>
-        <MemoryRouter>
-          <HomePage />
-        </MemoryRouter>
-      </ErrorBoundary>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <MemoryRouter>
+            <HomePage />
+          </MemoryRouter>
+        </ErrorBoundary>
+      </Provider>
     );
 
     await waitFor(() => {

@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store/index';
 import HomePage from './HomePage';
 import * as getPostsModule from '../../queries/get_posts';
 import * as searchPostsModule from '../../queries/search_posts';
@@ -20,9 +22,11 @@ describe('HomePage Integration Tests', () => {
       .mockResolvedValue({ posts: mockPosts });
 
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
 
     await waitFor(() => {
@@ -40,9 +44,11 @@ describe('HomePage Integration Tests', () => {
       .mockResolvedValue({ posts: mockPosts });
 
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(await screen.findByDisplayValue('example')).toBeInTheDocument();
@@ -67,9 +73,11 @@ describe('HomePage Integration Tests', () => {
     vi.spyOn(getPostsModule, 'getPosts').mockReturnValue(loadingPromise);
 
     render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter>
+          <HomePage />
+        </MemoryRouter>
+      </Provider>
     );
 
     // Проверка: Loader виден во время загрузки

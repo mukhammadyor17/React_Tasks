@@ -2,6 +2,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, vi } from 'vitest';
 import ErrorBoundary from '../../components/error_boundary/ErrorBoundary';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../store/index';
 import HomePage from './HomePage';
 import '@testing-library/jest-dom/vitest';
 
@@ -12,11 +14,13 @@ describe('Error Button Tests', () => {
       .mockImplementation(() => {});
 
     render(
-      <ErrorBoundary>
-        <MemoryRouter>
-          <HomePage />
-        </MemoryRouter>
-      </ErrorBoundary>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <MemoryRouter>
+            <HomePage />
+          </MemoryRouter>
+        </ErrorBoundary>
+      </Provider>
     );
 
     const errorButton = screen.getByRole('button', {
