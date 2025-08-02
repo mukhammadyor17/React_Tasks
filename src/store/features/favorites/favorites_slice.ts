@@ -1,8 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+export interface FavoritePost {
+  id: number;
+  title: string;
+  body: string;
+}
+
 export interface FavoritesState {
-  favorites: number[];
+  favorites: FavoritePost[];
 }
 
 const initialState: FavoritesState = {
@@ -13,10 +19,14 @@ export const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
-    toggleFavorite: (state, action: PayloadAction<number>) => {
-      const isExist = state.favorites.includes(action.payload);
+    toggleFavorite: (state, action: PayloadAction<FavoritePost>) => {
+      const isExist = state.favorites.some(
+        (post) => post.id === action.payload.id
+      );
       if (isExist) {
-        state.favorites = state.favorites.filter((id) => id !== action.payload);
+        state.favorites = state.favorites.filter(
+          (post) => post.id !== action.payload.id
+        );
       } else {
         state.favorites.push(action.payload);
       }

@@ -11,23 +11,20 @@ interface CardItemProps {
 }
 
 // Custom hook for favorites logic
-const useFavorites = (postId: number) => {
+const useFavorites = (post: Post) => {
   const dispatch = useDispatch();
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
   );
 
-  const isFavorite = useMemo(
-    () => favorites.includes(postId),
-    [favorites, postId]
-  );
+  const isFavorite = useMemo(() => favorites.includes(post), [favorites, post]);
 
   const handleToggleFavorite = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.stopPropagation();
-      dispatch(toggleFavorite(postId));
+      dispatch(toggleFavorite(post));
     },
-    [dispatch, postId]
+    [dispatch, post]
   );
 
   return { isFavorite, handleToggleFavorite };
@@ -47,7 +44,7 @@ const cardStyles = {
 
 const CardItem = React.memo(({ post }: CardItemProps) => {
   const { title, body, id } = post;
-  const { isFavorite, handleToggleFavorite } = useFavorites(id);
+  const { isFavorite, handleToggleFavorite } = useFavorites(post);
 
   return (
     <article className={cardStyles.container}>
