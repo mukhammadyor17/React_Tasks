@@ -31,7 +31,7 @@ const DetailPage = () => {
   }, [fetchPost]);
 
   return (
-    <div className="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen h-full">
+    <div className="p-6 bg-gray-50 dark:bg-gray-800 min-h-screen h-full">
       <div className="flex justify-end">
         <NavLink
           to={'/React_Tasks'}

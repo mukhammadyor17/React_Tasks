@@ -1,11 +1,14 @@
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { getPosts } from '../../queries/get_posts';
 import { searchPosts } from '../../queries/search_posts';
-import { type Post } from '../../models/post.interface';
 import { useSearchParams } from 'react-router-dom';
+import { type Post } from '../../models/post.interface';
+import type { RootState } from '../../store';
 
 import CardList from '../../components/card_list/CardList';
 import SearchBar from '../../components/search_bar/SearchBar';
-import React, { useState, useEffect } from 'react';
+import SelectedCard from '../../components/selected_card/SelectedCard';
 
 const pages = [1, 2, 3, 4, 5, 6, 7];
 const limit = 5;
@@ -19,6 +22,9 @@ const HomePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = Number(searchParams.get('page')) || 1;
   const [page, setPage] = useState(initialPage);
+  const favorites = useSelector(
+    (state: RootState) => state.favorites.favorites
+  );
 
   async function fetchPosts() {
     try {
@@ -108,7 +114,6 @@ const HomePage: React.FC = () => {
           </button>
         ))}
       </div>
-
       <div className="w-full flex justify-end mb-10 px-10">
         <button
           className="border border-red-400 dark:border-red-500 px-4 py-2 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
@@ -117,6 +122,7 @@ const HomePage: React.FC = () => {
           Test Error Boundary
         </button>
       </div>
+      {favorites.length > 0 && <SelectedCard />}
     </div>
   );
 };

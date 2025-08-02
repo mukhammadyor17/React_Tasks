@@ -33,6 +33,7 @@ export default tseslint.config(
       'react-hooks/exhaustive-deps': 'off',
       'react-refresh/only-export-components': 'off',
       'react-compiler/react-compiler': 'error',
+      'react/prop-types': 'off',
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
     },
