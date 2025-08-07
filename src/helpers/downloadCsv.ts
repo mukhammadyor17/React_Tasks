@@ -1,12 +1,17 @@
 import type { FavoritePost } from '../store/features/favorites/favorites_slice';
 
+const escapeCsvValue = (value: string | number) =>
+  `"${String(value).replace(/"/g, '""')}"`; // дублируем кавычки внутри
+
 const arrayToCsv = (data: FavoritePost[]) => {
-  return [
-    'Favorite posts',
-    ...data.map(
-      (item: FavoritePost) => ` ${item.id}. ${item.title}. ${item.body}`
-    ),
-  ].join('\n');
+  const header = ['id', 'title', 'body'];
+  const rows = data.map((item) => [
+    escapeCsvValue(item.id),
+    escapeCsvValue(item.title),
+    escapeCsvValue(item.body),
+  ]);
+
+  return [header, ...rows].map((row) => row.join(',')).join('\r\n');
 };
 
 export const downloadFile = (data: FavoritePost[]) => {
