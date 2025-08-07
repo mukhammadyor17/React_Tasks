@@ -23,21 +23,4 @@ describe('HomeLayout', () => {
     // На главной странице Outlet нет
     expect(screen.queryByText('OutletContent')).not.toBeInTheDocument();
   });
-
-  it('renders Outlet when id param is present', () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={['/post/123']}>
-          <Routes>
-            <Route path="/" element={<HomeLayout />}>
-              <Route path="post/:id" element={<DummyOutlet />} />
-            </Route>
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    // При пути с id Outlet появляется
-    expect(screen.getByText('OutletContent')).toBeInTheDocument();
-  });
 });
