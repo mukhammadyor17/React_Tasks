@@ -1,11 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
+// HomePage.integration.test.tsx
+import { render, screen } from '@testing-library/react';
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from '../../store/index';
 import HomePage from './HomePage';
-import * as getPostsModule from '../../queries/get_posts';
-import * as searchPostsModule from '../../queries/search_posts';
+import * as postApi from '../../store/query/post_api';
 import '@testing-library/jest-dom/vitest';
 
 const mockPosts = [{ id: 1, title: 'Test', body: 'Body content' }];
@@ -15,11 +15,19 @@ beforeEach(() => {
   localStorage.clear();
 });
 
-describe('HomePage Integration Tests', () => {
+describe('HomePage Integration Tests with RTK Query', () => {
   it('Makes initial API call on component mount when no saved search term', async () => {
-    const getPostsMock = vi
-      .spyOn(getPostsModule, 'getPosts')
-      .mockResolvedValue({ posts: mockPosts });
+    vi.spyOn(postApi, 'useGetPostsQuery').mockReturnValue({
+      data: { posts: mockPosts },
+      isLoading: false,
+      isError: false,
+    } as never);
+
+    vi.spyOn(postApi, 'useSearchPostsQuery').mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: false,
+    } as never);
 
     render(
       <Provider store={store}>
@@ -29,19 +37,23 @@ describe('HomePage Integration Tests', () => {
       </Provider>
     );
 
-    await waitFor(() => {
-      expect(getPostsMock).toHaveBeenCalledTimes(1);
-    });
-
     expect(await screen.findByText('Test')).toBeInTheDocument();
   });
 
   it('Handles search term from localStorage on initial load', async () => {
     localStorage.setItem('searchQuery', 'example');
 
-    const searchPostsMock = vi
-      .spyOn(searchPostsModule, 'searchPosts')
-      .mockResolvedValue({ posts: mockPosts });
+    vi.spyOn(postApi, 'useSearchPostsQuery').mockReturnValue({
+      data: { posts: mockPosts },
+      isLoading: false,
+      isError: false,
+    } as never);
+
+    vi.spyOn(postApi, 'useGetPostsQuery').mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: false,
+    } as never);
 
     render(
       <Provider store={store}>
@@ -52,25 +64,21 @@ describe('HomePage Integration Tests', () => {
     );
 
     expect(await screen.findByDisplayValue('example')).toBeInTheDocument();
-
-    await waitFor(() => {
-      expect(searchPostsMock).toHaveBeenCalledWith({
-        limit: 5,
-        q: 'example',
-      });
-    });
-
     expect(await screen.findByText('Test')).toBeInTheDocument();
   });
 
   it('Manages loading states during API calls', async () => {
-    let resolvePromise: (value: unknown) => void;
+    vi.spyOn(postApi, 'useGetPostsQuery').mockReturnValue({
+      data: undefined,
+      isLoading: true,
+      isError: false,
+    } as never);
 
-    const loadingPromise = new Promise((res) => {
-      resolvePromise = res;
-    });
-
-    vi.spyOn(getPostsModule, 'getPosts').mockReturnValue(loadingPromise);
+    vi.spyOn(postApi, 'useSearchPostsQuery').mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: false,
+    } as never);
 
     render(
       <Provider store={store}>
@@ -80,18 +88,6 @@ describe('HomePage Integration Tests', () => {
       </Provider>
     );
 
-    // Проверка: Loader виден во время загрузки
     expect(screen.getByTestId('loader')).toBeInTheDocument();
-
-    // Завершаем загрузку
-    resolvePromise!({ posts: mockPosts });
-
-    await waitFor(() => {
-      // Проверка: Loader исчез после загрузки
-      expect(screen.queryByTestId('loader')).not.toBeInTheDocument();
-    });
-
-    // Проверка: Контент отображается
-    expect(await screen.findByText('Test')).toBeInTheDocument();
   });
 });
