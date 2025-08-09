@@ -70,7 +70,7 @@ describe('HomePage Integration Tests with RTK Query', () => {
   it('Manages loading states during API calls', async () => {
     vi.spyOn(postApi, 'useGetPostsQuery').mockReturnValue({
       data: undefined,
-      isLoading: true,
+      isFetching: true,
       isError: false,
     } as never);
 

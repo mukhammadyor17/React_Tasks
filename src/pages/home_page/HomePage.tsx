@@ -35,8 +35,9 @@ const HomePage: React.FC = () => {
 
   const {
     data: postsResponse,
-    isLoading: postsLoading,
+    isFetching: postsLoading,
     isError: postsError,
+    refetch: refetchPosts,
   } = useGetPostsQuery({ limit, skip }, { skip: !!trimmedQuery });
 
   const {
@@ -99,6 +100,7 @@ const HomePage: React.FC = () => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onSearch={(val) => setQuery(val)}
+        onRefetch={refetchPosts}
       />
 
       <CardList posts={data} isLoading={isLoading} />
