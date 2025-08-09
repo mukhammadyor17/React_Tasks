@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { getPosts } from '../../queries/get_posts';
-import { searchPosts } from '../../queries/search_posts';
 import { useSearchParams } from 'react-router-dom';
+
+import {
+  useGetPostsQuery,
+  useSearchPostsQuery,
+} from '../../store/query/post_api';
 import { type Post } from '../../models/post.interface';
 import type { RootState } from '../../store';
 
@@ -19,6 +22,7 @@ const HomePage: React.FC = () => {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = Number(searchParams.get('page')) || 1;
   const [page, setPage] = useState(initialPage);
@@ -26,39 +30,21 @@ const HomePage: React.FC = () => {
     (state: RootState) => state.favorites.favorites
   );
 
-  async function fetchPosts() {
-    try {
-      setIsLoading(true);
-      setIsError(false);
+  const trimmedQuery = query.trim();
+  const skip = (page - 1) * limit;
 
-      const skip = (page - 1) * limit;
+  const {
+    data: postsResponse,
+    isFetching: postsLoading,
+    isError: postsError,
+    refetch: refetchPosts,
+  } = useGetPostsQuery({ limit, skip }, { skip: !!trimmedQuery });
 
-      const res = await getPosts({ limit, skip });
-      setData(res.posts);
-    } catch {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  async function fetchSearch(searchQuery: string) {
-    try {
-      setIsLoading(true);
-      setIsError(false);
-      const res = await searchPosts({ limit: 5, q: searchQuery });
-      setData(res.posts);
-    } catch {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  const changePageHandler = (index: number) => {
-    setSearchParams({ page: index.toString() });
-    setPage(index);
-  };
+  const {
+    data: searchResponse,
+    isLoading: searchLoading,
+    isError: searchError,
+  } = useSearchPostsQuery({ limit, q: trimmedQuery }, { skip: !trimmedQuery });
 
   useEffect(() => {
     const saved = localStorage.getItem('searchQuery') ?? '';
@@ -67,17 +53,31 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     const trimmed = query.trim();
+    const timer = setTimeout(() => {
+      localStorage.setItem('searchQuery', trimmed);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
 
-    if (trimmed) {
-      const timer = setTimeout(() => {
-        localStorage.setItem('searchQuery', trimmed);
-        fetchSearch(trimmed);
-      }, 300);
-      return () => clearTimeout(timer);
+  useEffect(() => {
+    if (trimmedQuery) {
+      setData(searchResponse?.posts ?? []);
+      setIsLoading(searchLoading);
+      setIsError(Boolean(searchError));
+    } else {
+      setData(postsResponse?.posts ?? []);
+      setIsLoading(postsLoading);
+      setIsError(Boolean(postsError));
     }
-
-    fetchPosts();
-  }, [query, page]);
+  }, [
+    trimmedQuery,
+    searchResponse,
+    postsResponse,
+    searchLoading,
+    postsLoading,
+    searchError,
+    postsError,
+  ]);
 
   useEffect(() => {
     const urlPage = Number(searchParams.get('page')) || 1;
@@ -85,6 +85,11 @@ const HomePage: React.FC = () => {
       setPage(urlPage);
     }
   }, [searchParams]);
+
+  const changePageHandler = (index: number) => {
+    setSearchParams({ page: index.toString() });
+    setPage(index);
+  };
 
   if (showError) throw new Error('Test error triggered by button');
   if (isError) throw new Error('Error when get data');
@@ -95,6 +100,7 @@ const HomePage: React.FC = () => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onSearch={(val) => setQuery(val)}
+        onRefetch={refetchPosts}
       />
 
       <CardList posts={data} isLoading={isLoading} />
@@ -103,7 +109,7 @@ const HomePage: React.FC = () => {
         {pages.map((i: number) => (
           <button
             className={`w-10 h-10 flex justify-center items-center cursor-pointer border border-indigo-400 dark:border-indigo-500 rounded-md transition-colors ${
-              page == i
+              page === i
                 ? 'bg-indigo-400 dark:bg-indigo-600 text-white'
                 : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-gray-700'
             }`}
@@ -114,6 +120,7 @@ const HomePage: React.FC = () => {
           </button>
         ))}
       </div>
+
       <div className="w-full flex justify-end mb-10 px-10">
         <button
           className="border border-red-400 dark:border-red-500 px-4 py-2 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
@@ -122,6 +129,7 @@ const HomePage: React.FC = () => {
           Test Error Boundary
         </button>
       </div>
+
       {favorites.length > 0 && <SelectedCard />}
     </div>
   );

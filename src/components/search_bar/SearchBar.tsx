@@ -4,9 +4,15 @@ interface SearchBarProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSearch: (query: string) => void;
+  onRefetch: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  value,
+  onChange,
+  onSearch,
+  onRefetch,
+}) => {
   const handleClick = () => {
     onSearch(value.trim());
     localStorage.setItem('searchQuery', value.trim());
@@ -28,6 +34,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSearch }) => {
         >
           Search
         </button>
+        <div
+          className="cursor-pointer ml-auto px-6 py-2 bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white rounded active:bg-indigo-700 dark:active:bg-indigo-800 transition-colors"
+          onClick={onRefetch}
+        >
+          Refresh
+        </div>
       </div>
     </header>
   );
