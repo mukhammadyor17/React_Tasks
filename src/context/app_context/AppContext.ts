@@ -1,33 +1,25 @@
+'use client';
+
 import { useState, useCallback, useEffect } from 'react';
 
 type Theme = 'dark' | 'light';
 
-export const useCreateAppContext = function () {
+export const useCreateAppContext = () => {
   const [theme, setTheme] = useState<Theme>(() => {
-    // Get theme from localStorage or default to 'light'
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || 'light';
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem('theme') as Theme) || 'light';
+    }
+    return 'light'; // при SSR
   });
 
   const toggleTheme = useCallback(() => {
-    setTheme((prevValue: Theme) => (prevValue === 'light' ? 'dark' : 'light'));
+    setTheme((prevValue) => (prevValue === 'light' ? 'dark' : 'light'));
   }, []);
 
-  // Persist theme to localStorage and apply to document
   useEffect(() => {
     localStorage.setItem('theme', theme);
-
-    // Apply theme class to document element
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
+    document.documentElement.classList.toggle('dark', theme === 'dark');
   }, [theme]);
 
-  return {
-    theme,
-    toggleTheme,
-  };
+  return { theme, toggleTheme };
 };

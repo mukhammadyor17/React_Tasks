@@ -1,7 +1,7 @@
 import type { FavoritePost } from '../store/features/favorites/favorites_slice';
 
 const escapeCsvValue = (value: string | number) =>
-  `"${String(value).replace(/"/g, '""')}"`; // дублируем кавычки внутри
+  `"${String(value).replace(/"/g, '""')}"`;
 
 const arrayToCsv = (data: FavoritePost[]) => {
   const header = ['id', 'title', 'body'];

@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 import { toggleFavorite } from '../../store/features/favorites/favorites_slice';
 
 import type { RootState } from '../../store';
@@ -51,14 +53,14 @@ const CardItem = React.memo(({ post }: CardItemProps) => {
 
   return (
     <article className={cardStyles.container}>
-      <NavLink
-        to={`post/${id}`}
+      <Link
+        href={`post/${id}`}
         className="block"
         aria-label={`View details for ${title}`}
       >
         <h3 className={cardStyles.title}>{title}</h3>
         <p className={cardStyles.body}>{body}</p>
-      </NavLink>
+      </Link>
 
       <footer className={cardStyles.footer}>
         <label className="flex items-center cursor-pointer">

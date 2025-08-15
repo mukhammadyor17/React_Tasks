@@ -1,7 +1,8 @@
+'use client';
+
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store';
 import { clear } from '../../store/features/favorites/favorites_slice';
-import { downloadFile } from '../../helpers/downloadCsv';
 
 const SelectedCard = () => {
   const favorites = useSelector(
@@ -9,8 +10,9 @@ const SelectedCard = () => {
   );
   const dispatch = useDispatch();
 
-  const donwloadFileHandler = () => {
-    downloadFile(favorites);
+  const handleDownload = () => {
+    const encoded = encodeURIComponent(JSON.stringify(favorites));
+    window.open(`/api/download-csv?data=${encoded}`, '_blank');
   };
 
   return (
@@ -27,7 +29,7 @@ const SelectedCard = () => {
         </button>
         <button
           className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white rounded active:bg-indigo-700 dark:active:bg-indigo-800 transition-colors"
-          onClick={() => donwloadFileHandler()}
+          onClick={handleDownload}
         >
           Download
         </button>
