@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { useSelector } from 'react-redux';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
@@ -24,6 +25,7 @@ const Page: React.FC = () => {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
+  const t = useTranslations('HomePage');
 
   const router = useRouter();
   const pathname = usePathname();
@@ -141,7 +143,7 @@ const Page: React.FC = () => {
           className="border border-red-400 dark:border-red-500 px-4 py-2 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
           onClick={() => setShowError(true)}
         >
-          Test Error Boundary
+          {t('test')}
         </button>
       </div>
 

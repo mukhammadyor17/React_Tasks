@@ -1,4 +1,6 @@
 import { Providers } from './providers';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import Header from './_components/Header';
 import type { Metadata } from 'next';
 import './globals.css';
@@ -8,20 +10,24 @@ export const metadata: Metadata = {
   description: 'React Course.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en">
+    <html lang={locale || 'en'}>
       <body>
-        <Providers>
-          <Header />
-          <div className="pt-[70px] min-h-screen bg-gray-50 dark:bg-gray-800">
-            {children}
-          </div>
-        </Providers>
+        <NextIntlClientProvider>
+          <Providers>
+            <Header />
+            <div className="pt-[70px] min-h-screen bg-gray-50 dark:bg-gray-800">
+              {children}
+            </div>
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
