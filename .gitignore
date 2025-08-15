@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+.next
+next-env.d.ts
+dist
+
 node_modules
 dist
 dist-ssr
@@ -23,3 +27,4 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+.vercel

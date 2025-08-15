@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 interface SearchBarProps {
   value: string;
@@ -18,12 +21,14 @@ const SearchBar: React.FC<SearchBarProps> = ({
     localStorage.setItem('searchQuery', value.trim());
   };
 
+  const t = useTranslations('SearchBar');
+
   return (
     <header className="px-10 py-5 w-full bg-white dark:bg-gray-800 shadow-xs border-b border-gray-200 dark:border-gray-700">
       <div className="flex gap-4 max-w-4xl mx-auto">
         <input
           type="text"
-          placeholder="Search..."
+          placeholder={`${t('search')}...`}
           className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-colors"
           value={value}
           onChange={onChange}
@@ -32,13 +37,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
           className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white rounded active:bg-indigo-700 dark:active:bg-indigo-800 transition-colors"
           onClick={handleClick}
         >
-          Search
+          {t('search')}
         </button>
         <div
           className="cursor-pointer ml-auto px-6 py-2 bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white rounded active:bg-indigo-700 dark:active:bg-indigo-800 transition-colors"
           onClick={onRefetch}
         >
-          Refresh
+          {t('refresh')}
         </div>
       </div>
     </header>

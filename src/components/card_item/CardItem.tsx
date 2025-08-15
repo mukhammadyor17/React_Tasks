@@ -1,6 +1,9 @@
+'use client';
+
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { toggleFavorite } from '../../store/features/favorites/favorites_slice';
 
 import type { RootState } from '../../store';
@@ -48,17 +51,18 @@ const cardStyles = {
 const CardItem = React.memo(({ post }: CardItemProps) => {
   const { title, body, id } = post;
   const { isFavorite, handleToggleFavorite } = useFavorites(post);
+  const t = useTranslations('CardItem');
 
   return (
     <article className={cardStyles.container}>
-      <NavLink
-        to={`post/${id}`}
+      <Link
+        href={`post/${id}`}
         className="block"
         aria-label={`View details for ${title}`}
       >
         <h3 className={cardStyles.title}>{title}</h3>
         <p className={cardStyles.body}>{body}</p>
-      </NavLink>
+      </Link>
 
       <footer className={cardStyles.footer}>
         <label className="flex items-center cursor-pointer">
@@ -70,7 +74,7 @@ const CardItem = React.memo(({ post }: CardItemProps) => {
             aria-label={`${isFavorite ? 'Remove from' : 'Add to'} favorites`}
           />
           <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
-            {isFavorite ? 'Favorited' : 'Add to favorites'}
+            {isFavorite ? t('remove') : t('add')}
           </span>
         </label>
       </footer>

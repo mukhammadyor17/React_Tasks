@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 import {
   useGetPostsQuery,
   useSearchPostsQuery,
-} from '../../store/query/post_api';
-import { type Post } from '../../models/post.interface';
-import type { RootState } from '../../store';
+} from './../store/query/post_api.ts';
+import { type Post } from './../models/post.interface';
+import type { RootState } from './../store';
 
-import CardList from '../../components/card_list/CardList';
-import SearchBar from '../../components/search_bar/SearchBar';
-import SelectedCard from '../../components/selected_card/SelectedCard';
+import CardList from './../components/card_list/CardList';
+import SearchBar from './../components/search_bar/SearchBar';
+import SelectedCard from './../components/selected_card/SelectedCard';
 
 const pages = [1, 2, 3, 4, 5, 6, 7];
 const limit = 5;
 
-const HomePage: React.FC = () => {
+const Page: React.FC = () => {
   const [data, setData] = useState<Post[]>([]);
   const [query, setQuery] = useState('');
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showError, setShowError] = useState(false);
+  const t = useTranslations('HomePage');
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialPage = Number(searchParams.get('page')) || 1;
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const search = searchParams?.get('page');
+
+  const initialPage = Number(search) || 1;
   const [page, setPage] = useState(initialPage);
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites
@@ -42,7 +50,7 @@ const HomePage: React.FC = () => {
 
   const {
     data: searchResponse,
-    isLoading: searchLoading,
+    isFetching: searchLoading,
     isError: searchError,
   } = useSearchPostsQuery({ limit, q: trimmedQuery }, { skip: !trimmedQuery });
 
@@ -80,16 +88,25 @@ const HomePage: React.FC = () => {
   ]);
 
   useEffect(() => {
-    const urlPage = Number(searchParams.get('page')) || 1;
+    const urlPage = Number(search) || 1;
     if (urlPage !== page) {
       setPage(urlPage);
     }
-  }, [searchParams]);
+  }, [search]);
 
   const changePageHandler = (index: number) => {
-    setSearchParams({ page: index.toString() });
+    router.push(`${pathname}?${createQueryString('page', index.toString())}`);
     setPage(index);
   };
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams?.toString());
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   if (showError) throw new Error('Test error triggered by button');
   if (isError) throw new Error('Error when get data');
@@ -126,7 +143,7 @@ const HomePage: React.FC = () => {
           className="border border-red-400 dark:border-red-500 px-4 py-2 rounded hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
           onClick={() => setShowError(true)}
         >
-          Test Error Boundary
+          {t('test')}
         </button>
       </div>
 
@@ -135,4 +152,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default Page;

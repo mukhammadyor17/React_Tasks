@@ -1,33 +1,32 @@
+'use client';
+
 import { useState, useCallback, useEffect } from 'react';
 
 type Theme = 'dark' | 'light';
 
-export const useCreateAppContext = function () {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Get theme from localStorage or default to 'light'
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || 'light';
-  });
+export const useCreateAppContext = () => {
+  const [theme, setTheme] = useState<Theme>('light');
+  const [mounted, setMounted] = useState(false);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prevValue: Theme) => (prevValue === 'light' ? 'dark' : 'light'));
+    setTheme((prevValue) => (prevValue === 'light' ? 'dark' : 'light'));
   }, []);
 
-  // Persist theme to localStorage and apply to document
   useEffect(() => {
-    localStorage.setItem('theme', theme);
-
-    // Apply theme class to document element
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
+    const storedTheme = localStorage.getItem('theme') as Theme | null;
+    if (storedTheme) {
+      setTheme(storedTheme);
+      document.documentElement.classList.toggle('dark', storedTheme === 'dark');
     }
-  }, [theme]);
+    setMounted(true);
+  }, []);
 
-  return {
-    theme,
-    toggleTheme,
-  };
+  useEffect(() => {
+    if (mounted) {
+      localStorage.setItem('theme', theme);
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    }
+  }, [theme, mounted]);
+
+  return { theme, toggleTheme, mounted };
 };

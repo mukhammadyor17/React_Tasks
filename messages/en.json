@@ -1,0 +1,28 @@
+{
+  "HomePage": {
+    "test": "Test Error Boundary"
+  },
+  "AboutPage": {
+    "title": "About This Application",
+    "author": "Author",
+    "location": "Location",
+    "course": "Course"
+  },
+  "Header": {
+    "main": "Main",
+    "about": "About"
+  },
+  "SearchBar": {
+    "search": "Search",
+    "refresh": "Refresh"
+  },
+  "CardItem": {
+    "add": "Add to favorite",
+    "remove": "Favorited"
+  },
+  "SelectedCard": {
+    "download": "Download",
+    "unselect": "Unselect all",
+    "text": "Selected items count:"
+  }
+}
