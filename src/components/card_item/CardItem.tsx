@@ -2,6 +2,7 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { toggleFavorite } from '../../store/features/favorites/favorites_slice';
 
@@ -50,6 +51,7 @@ const cardStyles = {
 const CardItem = React.memo(({ post }: CardItemProps) => {
   const { title, body, id } = post;
   const { isFavorite, handleToggleFavorite } = useFavorites(post);
+  const t = useTranslations('CardItem');
 
   return (
     <article className={cardStyles.container}>
@@ -72,7 +74,7 @@ const CardItem = React.memo(({ post }: CardItemProps) => {
             aria-label={`${isFavorite ? 'Remove from' : 'Add to'} favorites`}
           />
           <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
-            {isFavorite ? 'Favorited' : 'Add to favorites'}
+            {isFavorite ? t('remove') : t('add')}
           </span>
         </label>
       </footer>

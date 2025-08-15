@@ -1,5 +1,28 @@
 {
   "HomePage": {
     "test": "Тестировать Error Boundary"
+  },
+  "AboutPage": {
+    "title": "О приложении",
+    "author": "Автор",
+    "location": "Локация",
+    "course": "Курс"
+  },
+  "Header": {
+    "main": "Главная",
+    "about": "О нас"
+  },
+  "SearchBar": {
+    "search": "Поиск",
+    "refresh": "Обновить"
+  },
+  "CardItem": {
+    "add": "Добавить в избранное",
+    "remove": "Добавлен"
+  },
+  "SelectedCard": {
+    "download": "Скачать",
+    "unselect": "Отменить",
+    "text": "Выбрано постов:"
   }
 }

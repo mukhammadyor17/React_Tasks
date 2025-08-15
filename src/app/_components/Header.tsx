@@ -1,7 +1,7 @@
-// app/Header.tsx (Client Component)
 'use client';
 
 import { useAppContext } from '../../context/app_context/AppContextProvider';
+import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import LocaleSwitcher from './LocaleSwitcher';
@@ -9,6 +9,7 @@ import LocaleSwitcher from './LocaleSwitcher';
 export default function Header() {
   const pathname = usePathname();
   const { theme, toggleTheme, mounted } = useAppContext();
+  const t = useTranslations('Header');
 
   if (!mounted) return null;
 
@@ -23,7 +24,7 @@ export default function Header() {
             href="/"
             className={`text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors ${pathname === '/' ? 'active' : ''}`}
           >
-            Main
+            {t('main')}
           </Link>
         </li>
         <li>
@@ -31,7 +32,7 @@ export default function Header() {
             href="/about"
             className={`text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors ${pathname === '/about' ? 'active' : ''}`}
           >
-            About
+            {t('about')}
           </Link>
         </li>
         <button
