@@ -8,7 +8,7 @@ import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'coverage'] },
   {
     extends: [
       js.configs.recommended,
@@ -28,11 +28,12 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-extraneous-class': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      'react-refresh/only-export-components': 'off',
       'react-compiler/react-compiler': 'error',
+      'react/prop-types': 'off',
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
     },
