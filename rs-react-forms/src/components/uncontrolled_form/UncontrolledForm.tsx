@@ -167,7 +167,7 @@ const UncontrolledForm = ({ onClose }: { onClose: () => void }) => {
 
         <div className="col-span-2">
           <label htmlFor="name" className="block font-medium">
-            Name
+            Country Name
           </label>
           <input
             ref={countryRef}
@@ -187,6 +187,7 @@ const UncontrolledForm = ({ onClose }: { onClose: () => void }) => {
               id="file"
               type="file"
               accept=".png,.jpeg,.jpg"
+              placeholder="Choose file"
               onChange={handleFileChange}
             />
             {errors.file && (
