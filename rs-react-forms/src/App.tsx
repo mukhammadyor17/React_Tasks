@@ -53,12 +53,11 @@ const App = () => {
         >
           Show uncontrolled modal
         </button>
-      </div>
-
-      <div className="space-y-2 grid grid-cols-1 md:grid-cols-2 gap-5">
-        {users.map((user: User) => (
-          <UserCard key={user.id} user={user} isNew={newUsers.has(user.id)} />
-        ))}
+        <div className="space-y-2">
+          {users.map((user: User) => (
+            <UserCard key={user.id} user={user} isNew={newUsers.has(user.id)} />
+          ))}
+        </div>
       </div>
 
       {modalType === 'controlled' &&
