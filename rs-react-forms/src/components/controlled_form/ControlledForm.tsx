@@ -44,6 +44,7 @@ const ControlledForm = ({ onClose }: { onClose: () => void }) => {
   };
 
   const passwordValue = watch('password');
+  const confirmPasswordValue = watch('confirmPassword');
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -164,6 +165,9 @@ const ControlledForm = ({ onClose }: { onClose: () => void }) => {
               <p className="text-red-500 text-xs mt-1">
                 {errors.confirmPassword.message}
               </p>
+            )}
+            {confirmPasswordValue && passwordValue !== confirmPasswordValue && (
+              <p className="text-red-500 text-xs mt-1">Passwords must match</p>
             )}
           </div>
 

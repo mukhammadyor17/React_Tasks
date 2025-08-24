@@ -19,7 +19,7 @@ export const formSchema = z
     password: z
       .string()
       .min(1, 'Password is required')
-      .min(6, 'Password must be at least 6 characters')
+      .min(6, 'Muust be at least 6 character')
       .regex(/[0-9]/, 'Must contain at least one number')
       .regex(/[A-Z]/, 'Must contain at least one uppercase letter')
       .regex(/[a-z]/, 'Must contain at least one lowercase letter')
@@ -43,9 +43,14 @@ export const formSchema = z
 
     country: z.string().min(1, 'Country is required'),
   })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords must match',
-    path: ['confirmPassword'],
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Passwords must match',
+        path: ['confirmPassword'],
+      });
+    }
   });
 
-export type FormSchemaType = z.input<typeof formSchema>;
+export type FormSchemaType = z.infer<typeof formSchema>;
