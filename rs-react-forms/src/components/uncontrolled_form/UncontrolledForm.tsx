@@ -1,11 +1,14 @@
 import ModalWrapper from '../modal_wrapper/ModalWrapper';
 
-const UnControlledForm = ({ onClose }: { onClose: () => void }) => {
+const UncontrolledForm = ({ onClose }: { onClose: () => void }) => {
   return (
     <ModalWrapper onClose={onClose}>
-      <div>UnControlledForm</div>
+      <h2 id="uncontrolled-title" className="text-xl font-semibold mb-4">
+        Uncontrolled Form
+      </h2>
+      <div>UncontrolledForm content...</div>
     </ModalWrapper>
   );
 };
 
-export default UnControlledForm;
+export default UncontrolledForm;

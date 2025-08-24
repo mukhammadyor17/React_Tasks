@@ -1,7 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export interface User {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+  country: string;
+  password: string;
+  confirmPassword: string;
+  gender: string;
+  file: string;
+  accept: boolean;
+  timestamp: number;
+}
+
 export interface UserState {
-  users: string[];
+  users: User[];
 }
 
 const initialState: UserState = {
@@ -13,7 +27,11 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     addNewUser: (state, actions) => {
-      state.users = [actions.payload, ...state.users];
+      const newUser = {
+        ...actions.payload,
+        timestamp: Date.now(),
+      };
+      state.users = [newUser, ...state.users];
     },
   },
 });
