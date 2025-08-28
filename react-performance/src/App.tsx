@@ -1,24 +1,20 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Loader from './components/Loader';
+import CountryTable from './components/CountryTable';
 
-const fetchData = async () => {
-  const response = fetch('../data.json');
-  const data = (await response).json();
-  return data;
-};
+const queryClient = new QueryClient();
 
-const App = () => {
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return (
+const App = () => (
+  <QueryClientProvider client={queryClient}>
     <Suspense fallback={<Loader />}>
-      <div className="h-screen flex items-center justify-center">
-        <h1 className="text-3xl font-bold underline">Hello, React!</h1>
+      <div className="w-full h-full p-10">
+        <div className="max-w-3xl mx-auto bg-gray-100 p-5 rounded-md">
+          <CountryTable />
+        </div>
       </div>
     </Suspense>
-  );
-};
+  </QueryClientProvider>
+);
 
 export default App;
